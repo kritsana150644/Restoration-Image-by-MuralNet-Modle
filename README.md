@@ -54,11 +54,8 @@ Metric	Description
 PSNR	วัดความเหมือนของภาพที่บูรณะกับต้นฉบับ
 LPIPS	วัดคุณภาพเชิงการรับรู้ (Perceptual similarity)
 
-Dataset
-Thai mural dataset used in this project (DhMurals1714.rar)
-
 Due to file size limits, please download the dataset here:
-🔗 Google Drive Link (add your link here)
+Google Drive Link 
 
 Developer
 Kritsana Charoenkij
