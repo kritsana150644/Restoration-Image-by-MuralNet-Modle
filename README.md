@@ -19,8 +19,7 @@ We fine-tuned and extended the **MuralNet** model for **Thai mural restoration**
 
 1. **Edge Detection** – สร้างแผนที่เส้นขอบ (Edge map) เพื่อเป็นแนวทางให้โมเดลบูรณะภาพ  
 2. **Mask Generation** – สร้างมาสก์อัตโนมัติระบุบริเวณที่ชำรุด  
-3. **MuralNet Inpainting** – ใช้ CNN ในการเติมเต็มส่วนที่หายไป  
-4. **Post-Processing** – รวมภาพ ปรับโทนสี และลดรอยต่อให้เหมือนต้นฉบับ  
+3. **MuralNet Inpainting** – ใช้ CNN ในการเติมเต็มส่วนที่หายไป
 
 ---
 
