@@ -1,9 +1,9 @@
-# 🖼️ Restoration of Thai Mural Paintings using MuralNet Model  
+#Restoration of Thai Mural Paintings using MuralNet Model  
 ### การบูรณะภาพจิตรกรรมฝาผนังไทยด้วยโมเดล MuralNet
 
 ---
 
-## 📖 Project Overview | ภาพรวมของโครงการ
+## Project Overview | ภาพรวมของโครงการ
 
 This project aims to **restore and enhance damaged Thai mural paintings** using deep learning–based inpainting techniques.  
 We fine-tuned and extended the **MuralNet** model for **Thai mural restoration**, developed a **Flask web interface**, and created a **custom dataset** for real-world applications.
@@ -15,7 +15,7 @@ We fine-tuned and extended the **MuralNet** model for **Thai mural restoration**
 
 ---
 
-## 🧠 Model & Methodology | โมเดลและกระบวนการ
+## Model & Methodology | โมเดลและกระบวนการ
 
 1. **Edge Detection** – สร้างแผนที่เส้นขอบ (Edge map) เพื่อเป็นแนวทางให้โมเดลบูรณะภาพ  
 2. **Mask Generation** – สร้างมาสก์อัตโนมัติระบุบริเวณที่ชำรุด  
@@ -24,7 +24,7 @@ We fine-tuned and extended the **MuralNet** model for **Thai mural restoration**
 
 ---
 
-## 🖥️ System Overview | สถาปัตยกรรมระบบ
+## System Overview | สถาปัตยกรรมระบบ
 
 Input → Auto Mask → Edge Detection → MuralNet Inpainting → Output
 
@@ -66,12 +66,12 @@ Kritsana Charoenkij
 Faculty of Information Technology, Silpakorn University
 Advisor: Asst. Prof. Dr. Sunisa Pongpinijpinyo
 
-📧 Email: kritsana2544.oc@gmail.com
-🌐 GitHub: @kritsana150644
+Email: kritsana2544.oc@gmail.com
+GitHub: @kritsana150644
 
-🙏 Credits
+Credits
 This project is based on the original MuralNet implementation by
-🔗 qinnzou/mural-image-inpainting
+qinnzou/mural-image-inpainting
 
 We have fine-tuned and expanded it for Thai mural restoration,
 with additional dataset preparation, automatic mask generation,
