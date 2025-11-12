@@ -1,0 +1,41 @@
+# --- Python cache ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.egg-info/
+
+# --- Virtual environments ---
+venv/
+env/
+myenv/
+
+# --- Jupyter checkpoints ---
+.ipynb_checkpoints/
+
+# --- System files ---
+.DS_Store
+Thumbs.db
+
+# --- Datasets & large generated files ---
+dataset/
+data/
+raw_images/
+runtime/
+
+# --- Model checkpoints / weights ---
+checkpoints/
+*.pth
+*.pt
+
+# --- Temporary or generated outputs ---
+outputs/
+samples/
+
+# Archives
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz

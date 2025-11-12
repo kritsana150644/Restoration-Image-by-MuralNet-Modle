@@ -6,7 +6,7 @@ import yaml
 
 class Config(dict):
     def __init__(self, config_path):
-        with open(config_path, 'r') as f:
+        with open(config_path, 'r', encoding='utf-8') as f:
             self._yaml = f.read()
             self._dict = yaml.load(self._yaml,Loader=yaml.FullLoader)
             self._dict['PATH'] = os.path.dirname(config_path)
@@ -31,8 +31,8 @@ class Config(dict):
 
 DEFAULT_CONFIG = {
     'MODE': 1,                      # 1: train, 2: test, 3: eval
-    'MODEL': 1,                     # 1: edge model, 2: inpaint model, 3: edge-inpaint model, 4: joint model
-    'MASK': 3,                      # 1: random block, 2: half, 3: external, 4: (external, random block), 5: (external, random block, half)
+    'MODEL': 2,                     # 1: edge model, 2: inpaint model, 3: edge-inpaint model, 4: joint model
+    'MASK': 1,                      # 1: random block, 2: half, 3: external, 4: (external, random block), 5: (external, random block, half)
     'EDGE': 1,                      # 1: canny, 2: external
     'NMS': 1,                       # 0: no non-max-suppression, 1: applies non-max-suppression on the external edges by multiplying by Canny
     'SEED': 10,                     # random seed

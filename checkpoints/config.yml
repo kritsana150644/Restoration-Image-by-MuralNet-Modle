@@ -1,46 +1,48 @@
-MODE: 1             # 1: train, 2: test, 3: eval
-NMS: 0              # 0: no non-max-suppression, 1: applies non-max-suppression on the external edges by multiplying by Canny
-SEED: 10            # random seed
-GPU: [0]           # list of gpu ids
-DEBUG: 0            # turns on debugging mode
-VERBOSE: 0          # turns on verbose mode in the output console
-MODELNAME: muralinpainting
+MODE: 1             # 1: เทรน, 2: ทดสอบ, 3: ประเมินผล
+AUTO_RESUME: True
+NMS: 0              # 0: ไม่ใช้ non-max-suppression, 1: ใช้ NMS กับ edge ภายนอกโดยคูณกับ Canny
+SEED: 10            # ค่าการสุ่มเริ่มต้น (random seed) เพื่อให้ผลลัพธ์สามารถทำซ้ำได้
+#nvidia-smi
 
-TRAIN_FLIST: /public/home/lucy/mural/dataset/flist/train/images.flist
-VAL_FLIST: /public/home/lucy/mural/dataset/flist/val/images.flist
-TEST_FLIST: /public/home/lucy/mural/dataset/flist/val/images.flist
+DEBUG: 0            # 1 เพื่อเปิดโหมดดีบัก (แสดงรายละเอียดเพิ่ม), 0 คือปิด
+VERBOSE: 0          # 1 เพื่อแสดง log รายละเอียดในคอนโซล, 0 คือไม่แสดงมาก
+MODELNAME: muralinpainting  # ชื่อของโมเดลที่ใช้
 
-TRAIN_EDGE_FLIST: /public/home/lucy/mural/dataset/flist/train/edges.flist
-VAL_EDGE_FLIST: /public/home/lucy/mural/dataset/flist/val/edges.flist
-TEST_EDGE_FLIST: /public/home/lucy/mural/dataset/flist/val/edges.flist
+TRAIN_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/train/images.flist  # รายการภาพที่ใช้สำหรับการฝึก
+VAL_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/val/images.flist      # รายการภาพสำหรับ validation
+TEST_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/test/images.flist    # รายการภาพสำหรับทดสอบ
 
-TRAIN_MASK_FLIST: /public/home/lucy/mural/dataset/flist/train/masks.flist
-VAL_MASK_FLIST: /public/home/lucy/mural/dataset/flist/val/masks.flist
-TEST_MASK_FLIST: /public/home/lucy/mural/dataset/flist/val/masks.flist
+TRAIN_EDGE_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/train/edges.flist  # รายการไฟล์ edge สำหรับฝึก
+VAL_EDGE_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/val/edges.flist # รายการไฟล์ edge สำหรับ validation
+TEST_EDGE_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/test/edges.flist # รายการไฟล์ edge สำหรับทดสอบ
 
-LR: 0.0001                    # learning rate
-D2G_LR: 0.1                   # discriminator/generator learning rate ratio
-BETA1: 0.0                    # adam optimizer beta1
-BETA2: 0.9                    # adam optimizer beta2
-BATCH_SIZE: 8                 # input batch size for training
-INPUT_SIZE: 512               # input image size for training 0 for original size
-SIGMA: 2                      # standard deviation of the Gaussian filter used in Canny edge detector (0: random, -1: no edge)
-MAX_ITERS: 100000             # maximum number of iterations to train the model
-COARSE_ITERS: 40000           # number of iterations to train the coarse stage
+TRAIN_MASK_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/train/masks.flist  # รายการไฟล์ mask สำหรับฝึก
+VAL_MASK_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/val/masks.flist  # รายการไฟล์ mask สำหรับ validation
+TEST_MASK_FLIST: D:/Diffusion/mural-image-inpainting/dataset/flist/test/masks.flist # รายการไฟล์ mask สำหรับทดสอบ
 
-EDGE_THRESHOLD: 0.5           # edge detection threshold
-L1_LOSS_WEIGHT: 1             # l1 loss weight1
-FM_LOSS_WEIGHT: 10            # feature-matching loss weight
-STYLE_LOSS_WEIGHT: 250        # style loss weight250
-CONTENT_LOSS_WEIGHT: 0.1      # perceptual loss weight0.1
-HIST_LOSS_WEIGHT: 0.0005       # smooth loss weight
-INPAINT_ADV_LOSS_WEIGHT: 0.1  # adversarial loss weight0.1
+LR: 0.0001                    # ค่าการเรียนรู้ (learning rate)
+D2G_LR: 0.1                   # อัตราส่วน learning rate ระหว่าง discriminator กับ generator
+BETA1: 0.0                    # ค่า beta1 สำหรับ optimizer Adam
+BETA2: 0.9                    # ค่า beta2 สำหรับ optimizer Adam
+BATCH_SIZE: 1                 # จำนวนภาพในหนึ่ง batch ที่ใช้ในการฝึก
+INPUT_SIZE: 512               # ขนาดของภาพที่ป้อนเข้าโมเดล (ถ้า 0 ใช้ขนาดจริง)
+SIGMA: 1                      # ค่าเบลอของ Gaussian filter สำหรับ Canny edge (0: สุ่ม, -1: ไม่ใช้ edge)
+MAX_ITERS: 350000              # จำนวนรอบ iterations สูงสุดที่ใช้ในการฝึกโมเดล
+COARSE_ITERS: 40000           # จำนวน iterations สำหรับเทรนขั้น coarse (เบื้องต้น)
 
-GAN_LOSS: nsgan               # nsgan | lsgan | hinge
-GAN_POOL_SIZE: 0              # fake images pool size
+EDGE_THRESHOLD: 0.5           # ค่าความแรงของ edge ที่ใช้ในการตรวจจับ
+L1_LOSS_WEIGHT: 5             # ค่าความสำคัญของ L1 loss
+FM_LOSS_WEIGHT: 10            # ค่าความสำคัญของ Feature Matching loss
+STYLE_LOSS_WEIGHT: 50        # ค่าความสำคัญของ Style loss
+CONTENT_LOSS_WEIGHT: 1.0      # ค่าความสำคัญของ Perceptual/Content loss
+HIST_LOSS_WEIGHT: 0.003      # ค่าความสำคัญของ Smoothness/Histogram loss
+INPAINT_ADV_LOSS_WEIGHT: 0.5  # ค่าความสำคัญของ Adversarial loss
 
-SAVE_INTERVAL: 200           # how many iterations to wait before saving model (0: never)
-SAMPLE_INTERVAL: 200         # how many iterations to wait before sampling (0: never)
-SAMPLE_SIZE: 4               # number of images to sample
-EVAL_INTERVAL: 0              # how many iterations to wait before model evaluation (0: never)
-LOG_INTERVAL: 100              # how many iterations to wait before logging training status (0: never)
+GAN_LOSS: nsgan               # ประเภทของ GAN loss: nsgan | lsgan | hinge
+GAN_POOL_SIZE: 0              # ขนาดของ fake image pool ที่ใช้ใน training (0 = ไม่ใช้ pool)
+
+SAVE_INTERVAL: 1000            # บันทึกโมเดลทุก ๆ กี่ iterations (0 = ไม่บันทึกเลย)
+SAMPLE_INTERVAL: 1000          # สร้างตัวอย่างผลลัพธ์ทุก ๆ กี่ iterations (0 = ไม่สร้าง)
+SAMPLE_SIZE: 4                # จำนวนภาพที่ใช้ในการสร้างตัวอย่างผลลัพธ์
+EVAL_INTERVAL: 0              # ประเมินผลโมเดลทุก ๆ กี่ iterations (0 = ไม่ประเมินเลย)
+LOG_INTERVAL: 100             # แสดง log การฝึกทุก ๆ กี่ iterations (0 = ไม่แสดง)

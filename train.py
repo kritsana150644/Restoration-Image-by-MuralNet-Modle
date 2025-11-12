@@ -1,2 +1,8 @@
 from main import main
-main(mode=1)
+
+if __name__ == '__main__':
+    import multiprocessing
+    multiprocessing.freeze_support()
+    main(mode=1)
+    
+

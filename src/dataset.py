@@ -45,6 +45,10 @@ class Dataset(torch.utils.data.Dataset):
         return len(self.data)
 
     def __getitem__(self, index):
+        #print(f"📦 Index: {index}")
+        #print(f"🖼️ Image: {self.data[index]}")
+        #print(f"🪞 Edge: {self.edge_data[index]}")
+        #print(f"🎭 Mask: {self.mask_data[index]}")
         try:
             item = self.load_item(index)
         except:
@@ -133,7 +137,11 @@ class Dataset(torch.utils.data.Dataset):
         # else:
         imgh, imgw = img.shape[0:2]
         edge = imread(self.edge_data[index])
-        edge = rgb2gray(edge)
+        if edge is not None:
+            if edge.ndim == 3:
+                edge = rgb2gray(edge)
+            elif edge.ndim == 2:
+                edge = edge / 255.0  # normalize
         edge = 1 - edge
         edge = self.resize(edge, imgh, imgw)
 
@@ -142,6 +150,8 @@ class Dataset(torch.utils.data.Dataset):
             #     edge = edge * canny(img, sigma=sigma, mask=mask)
 
         return edge
+
+
 
     def load_mask(self, img, index):
         imgh, imgw = img.shape[0:2]
@@ -208,20 +218,24 @@ class Dataset(torch.utils.data.Dataset):
         if isinstance(flist, list):
             return flist
 
-        # flist: image file path, image directory path, text file flist path
         if isinstance(flist, str):
             if os.path.isdir(flist):
                 flist = list(glob.glob(flist + '/*.jpg')) + list(glob.glob(flist + '/*.png'))
                 flist.sort()
-                return flist
+                # normalize path
+                return [f.replace("\\", "/") for f in flist]
 
             if os.path.isfile(flist):
                 try:
-                    return np.genfromtxt(flist, dtype=np.str, encoding='utf-8')
+                    with open(flist, 'r', encoding='utf-8') as f:
+                        files = [line.strip() for line in f.readlines() if line.strip() != '']
+                    # normalize path
+                    return [f.replace("\\", "/") for f in files]
                 except:
-                    return [flist]
+                    return [flist.replace("\\", "/")]
 
         return []
+
 
     def create_iterator(self, batch_size):
         while True:

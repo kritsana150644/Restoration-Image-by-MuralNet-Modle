@@ -9,6 +9,7 @@ from src.config import Config
 import src.muralnet
 
 
+
 def main(mode=None):
     r"""starts the model
 
@@ -17,12 +18,8 @@ def main(mode=None):
     """
 
     config = load_config(mode)
-
-
     # cuda visble devices
     os.environ['CUDA_VISIBLE_DEVICES'] = ','.join(str(e) for e in config.GPU)
-
-
     # init device
     print("torch.cuda.is_available:")
     print(torch.cuda.is_available())
@@ -49,13 +46,32 @@ def main(mode=None):
     model = src.muralnet.MuralNet(config)
     model.load()
     print("model loaded")
-
+    print(f"Iteration after loading: {model.inpaint_model.iteration}")
+    print("Model device (inpaint_model):", next(model.inpaint_model.parameters()).device)
     # model training
     if config.MODE == 1:
-        config.print()
+        #config.print()
         print('\nstart training...\n')
-        model.train()
+        # ✅ แสดง device ตรวจสอบ batch แรก (เพื่อ debug)
+        train_loader = torch.utils.data.DataLoader(
+            dataset=model.train_dataset,
+            batch_size=config.BATCH_SIZE,
+            num_workers=8,
+            pin_memory=True,
+            drop_last=True,
+            shuffle=True
+        )
+        items = next(iter(train_loader))
+        items = tuple(item.to(config.DEVICE) for item in items)
+        images, images_gray, edges, masks = items
 
+        print(f"First batch devices:")
+        print(f"  images device: {images.device}")
+        print(f"  edges device: {edges.device}")
+        print(f"  masks device: {masks.device}")
+
+        # ✅ เรียก train แค่ครั้งเดียว
+        model.train()
     # model test
     elif config.MODE == 2:
         print('\nstart testing...\n')

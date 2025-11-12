@@ -19,7 +19,7 @@ class MuralNet():
         self.model_name = model_name
         # self.edge_model = EdgeModel(config).to(config.DEVICE)
         self.inpaint_model = InpaintingModel(config)
-        self.inpaint_model.to(config.DEVICE)
+        self.inpaint_model.to(self.config.DEVICE) 
         self.psnr = PSNR(255.0).to(config.DEVICE)
         self.edgeacc = EdgeAccuracy(config.EDGE_THRESHOLD).to(config.DEVICE)
 
@@ -61,7 +61,8 @@ class MuralNet():
         train_loader = DataLoader(
             dataset=self.train_dataset,
             batch_size=self.config.BATCH_SIZE,
-            num_workers=4,
+            num_workers=8,
+            pin_memory=True,
             drop_last=True,
             shuffle=True
         )
@@ -74,31 +75,37 @@ class MuralNet():
         if total == 0:
             print('No training data was provided! Check \'TRAIN_FLIST\' value in the configuration file.')
             return
-
+        #print("✅ เริ่มเทรนโมเดลบน:", self.config.DEVICE)
+        print("Model device:", next(self.inpaint_model.parameters()).device)  # ✅ ดูว่า model อยู่บน
+        
         while(keep_training):
             epoch += 1
             print('\n\nTraining epoch: %d' % epoch)
 
             progbar = Progbar(total, width=20, stateful_metrics=['epoch', 'iter'])
 
-            for items in train_loader:
+            for step, items in enumerate(train_loader):
                 self.inpaint_model.train()
 
                 images, images_gray, edges, masks = self.cuda(*items)
-                print(type(images))
 
-                # inpaint model
-                # train
+                # ✅ ตรวจสอบว่า Tensor อยู่บนอะไร (แสดงแค่ตอนแรก)
+                if epoch == 1 and step == 0:
+                    print("📷 images device:", images.device)
+                    print("🖍 edges device:", edges.device)
+                    print("🎭 masks device:", masks.device)
+
+                # 🔧 เทรนโมเดล
                 outputs, gen_loss, dis_loss, logs = self.inpaint_model.process(images, edges, masks)
                 outputs_merged = (outputs * masks) + (images * (1 - masks))
 
-                # metrics
+                # 📊 คำนวณ metric
                 psnr = self.psnr(self.postprocess(images), self.postprocess(outputs_merged))
                 mae = (torch.sum(torch.abs(images - outputs_merged)) / torch.sum(images)).float()
                 logs.append(('psnr', psnr.item()))
                 logs.append(('mae', mae.item()))
 
-                # backward
+                # 🔁 backward
                 self.inpaint_model.backward(gen_loss, dis_loss)
                 iteration = self.inpaint_model.iteration
 
@@ -113,24 +120,20 @@ class MuralNet():
 
                 progbar.add(len(images), values=logs if self.config.VERBOSE else [x for x in logs if not x[0].startswith('l_')])
 
-                # log model at checkpoints
                 if self.config.LOG_INTERVAL and iteration % self.config.LOG_INTERVAL == 0:
                     self.log(logs)
 
-                # sample model at checkpoints
                 if self.config.SAMPLE_INTERVAL and iteration % self.config.SAMPLE_INTERVAL == 0:
                     self.sample()
 
-                # evaluate model at checkpoints
                 if self.config.EVAL_INTERVAL and iteration % self.config.EVAL_INTERVAL == 0:
-                    print('\nstart eval...\n')
+                    print('\n🧪 start eval...\n')
                     self.eval()
 
-                # save model at checkpoints
                 if self.config.SAVE_INTERVAL and iteration % self.config.SAVE_INTERVAL == 0:
                     self.save()
-
-        print('\nEnd training....')
+                                        
+        print('\n✅ สิ้นสุดการเทรน...')
 
     def eval(self):
         val_loader = DataLoader(
@@ -255,6 +258,7 @@ class MuralNet():
     def log(self, logs):
         with open(self.log_file, 'a') as f:
             f.write('%s\n' % ' '.join([str(item[1]) for item in logs]))
+            f.flush() 
 
     def cuda(self, *args):
         return (item.to(self.config.DEVICE) for item in args)
