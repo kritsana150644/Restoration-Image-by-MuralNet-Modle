@@ -54,8 +54,21 @@ Metric	Description
 PSNR	วัดความเหมือนของภาพที่บูรณะกับต้นฉบับ
 LPIPS	วัดคุณภาพเชิงการรับรู้ (Perceptual similarity)
 
-Due to file size limits, please download the dataset here:
-Google Drive Link 
+เนื่องจากไฟล์ Dataset และไฟล์น้ำหนักโมเดล (Pretrained Weights) มีขนาดใหญ่เกินกว่าที่ GitHub จะรองรับได้ ผู้ใช้งานสามารถดาวน์โหลดไฟล์ทั้งหมดได้ผ่าน Google Drive ตามลิงก์ด้านล่างนี้
+Because the dataset and pretrained model weights are too large to be stored directly on GitHub, all required files can be downloaded via the Google Drive link below:
+Google Drive Link:
+https://drive.google.com/drive/folders/1SkyQYN5nMbbCFfLXdbuzP9sfO4xZ1RIT?usp=sharing
+
+หลังจากดาวน์โหลดไฟล์ Dataset แล้ว ให้แตกไฟล์ (extract) และนำไปวางในตำแหน่งที่ใช้สำหรับการทดสอบหรือฝึกโมเดลตามโครงสร้างโฟลเดอร์ของโปรเจกต์
+After downloading the dataset files, extract them and place the folder(s) in the appropriate directory according to the project structure for testing or training.
+
+ไฟล์น้ำหนักโมเดลที่ผ่านการฝึกแล้ว (.pth)
+ให้นำไฟล์น้ำหนักโมเดล (.pth) ที่ดาวน์โหลดมา
+ไปวางไว้ในโฟลเดอร์ checkpoints/
+เพื่อให้ระบบสามารถโหลดโมเดลได้อย่างถูกต้องระหว่างการประมวลผล
+Place the downloaded .pth model weight files into the
+checkpoints/ directory,
+so the system can correctly load the models during inference.
 
 Developer
 Kritsana Charoenkij
