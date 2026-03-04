@@ -71,7 +71,7 @@ checkpoints/ directory,
 so the system can correctly load the models during inference.
 
 Developer
-Kritsana Charoenkij
+Kritsana Charoenkit
 Faculty of Information Technology, Silpakorn University
 Advisor: Asst. Prof. Dr. Sunisa Pongpinijpinyo
 
